@@ -32,12 +32,12 @@ foreach($server in $rdServers){
     }
 }
 if ($allserversindrain -eq $false){
-    Write-Output "$(get-date -f "dd-MM-yyyy HH:mm") - Een van de servers is niet in drain gezet. Controleer log welke server" | Out-File -FilePath $log -append
+    Write-Output "$(get-date -f "dd-MM-yyyy HH:mm") - Een van de servers staat niet meer in drain. Controleer log welke server" | Out-File -FilePath $log -append
     Send-Telegram-Arnoud -Message "*Geplande herstart $($rdServers)*
 
-    Gepland onderhoud $($rdServers) is mislukt! Een van de servers staat niet in drain!
-    Controleer logs en zet de server alsnog in drain"
-    Write-Error "Een van de servers is niet in drain gezet." -ErrorAction Stop
+    Gepland onderhoud $($rdServers) is mislukt! Een van de servers staat niet meer in drain!
+    Controleer logs om te zien waar het fout is gegaan"
+    Write-Error "Een van de servers staat niet meer in drain." -ErrorAction Stop
 }
 
 $activesessions = Get-RDUserSession -ConnectionBroker $broker | select CollectionName,HostServer,Username,CreateTime,DisconnectTime,UnifiedSessionID | where {$rdServers -like $_.HostServer}
